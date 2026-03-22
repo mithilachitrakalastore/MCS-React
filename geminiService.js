@@ -1,38 +1,28 @@
-import { GoogleGenAI } from "@google/genai";
-
 /**
- * Service to interact with Google's Gemini AI for art advice.
+ * Service to interact with Google's Gemini AI for art advice via local Node server.
  * @param {string} userPrompt - The question or prompt from the user.
  * @returns {Promise<string>} - The AI generated response.
  */
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || (import.meta.env.MODE === 'development' ? 'http://localhost:10000/api' : '/api');
+
 export const getArtAdvice = async (userPrompt) => {
-    // Access the API key from Vite environment variables
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-
-    if (!apiKey) {
-        console.error("VITE_GEMINI_API_KEY is not defined in environment variables.");
-        return "The digital oracle is currently unavailable. Please ensure the API key is configured.";
-    }
-
-    const genAI = new GoogleGenAI(apiKey); 
-    const model = genAI.getGenerativeModel({
-        model: "gemini-3-flash-preview",
-        systemInstruction: `You are an expert art consultant specializing in Mithila (Maithili) art, 
-        also known as Madhubani art. You are deeply knowledgeable about its history, 
-        symbolism (like the significance of fish, peacocks, elephants, and the lotus), 
-        traditional techniques (Kachni and Bharni), and the cultural heritage of the Mithila region.
-        
-        Your tone should be helpful, culturally rich, poetic, and respectful of the tradition's sacred roots.
-        Guide customers in appreciating the art or choosing pieces for their homes based on their needs.
-        Keep your responses concise (under 150 words) but impactful.`,
-    });
-
     try {
-        const result = await model.generateContent(userPrompt);
-        const response = await result.response;
-        return response.text();
+        const response = await fetch(`${API_BASE_URL}/gemini`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userPrompt })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server returned ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data.text;
     } catch (error) {
-        console.error("Gemini AI Error:", error);
+        console.error("Gemini AI Server Error:", error);
         return "The spirits of Mithila are currently resting. Please try again later for art wisdom.";
     }
 };

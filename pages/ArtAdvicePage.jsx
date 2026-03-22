@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, Send, Info, Quote, MessageSquare, History, Lightbulb, User } from 'lucide-react';
 import { getArtAdvice } from '../geminiService.js';
-
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 export const ArtAdvicePage = () => {
     const [prompt, setPrompt] = useState('');
     const [chat, setChat] = useState([]);
@@ -165,9 +166,27 @@ export const ArtAdvicePage = () => {
                                                 ? 'bg-[#5c1111] text-white rounded-tr-none' 
                                                 : 'bg-white text-[#2a2723] rounded-tl-none border border-stone-100'
                                             }`}>
-                                                <p className={`text-sm md:text-base leading-relaxed ${msg.role === 'ai' ? 'font-playfair italic whitespace-pre-wrap' : 'font-medium'}`}>
-                                                    {msg.text}
-                                                </p>
+                                                <div className={`text-sm md:text-base leading-relaxed ${msg.role === 'ai' ? 'font-playfair whitespace-pre-wrap' : 'font-medium'}`}>
+                                                    {msg.role === 'ai' ? (
+                                                        <ReactMarkdown 
+                                                            remarkPlugins={[remarkGfm]}
+                                                            components={{
+                                                                p: ({node, ...props}) => <p className="mb-4 last:mb-0 leading-relaxed" {...props} />,
+                                                                ul: ({node, ...props}) => <ul className="list-disc pl-6 mb-4 space-y-2" {...props} />,
+                                                                ol: ({node, ...props}) => <ol className="list-decimal pl-6 mb-4 space-y-2" {...props} />,
+                                                                li: ({node, ...props}) => <li className="pl-2" {...props} />,
+                                                                strong: ({node, ...props}) => <strong className="font-bold text-[#5c1111]" {...props} />,
+                                                                h3: ({node, ...props}) => <h3 className="text-lg font-bold mb-3 mt-6 text-[#5c1111]" {...props} />,
+                                                                h4: ({node, ...props}) => <h4 className="text-base font-bold mb-2 mt-4" {...props} />,
+                                                                em: ({node, ...props}) => <em className="italic" {...props} />,
+                                                            }}
+                                                        >
+                                                            {msg.text}
+                                                        </ReactMarkdown>
+                                                    ) : (
+                                                        msg.text
+                                                    )}
+                                                </div>
                                             </div>
                                             <p className={`text-[10px] font-bold opacity-40 px-2 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                                                 {msg.timestamp}
