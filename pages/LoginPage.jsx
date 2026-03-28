@@ -163,8 +163,15 @@ export const LoginPage = ({ onLogin }) => {
                         {isLogin ? "Authorize Entry" : "Establish Heritage"}
                     </button>
 
-                    <button type="button" onClick={() => setIsLogin(!isLogin)} className="w-full text-[10px] font-black uppercase text-stone-400 hover:text-[#5c1111] transition-colors">
-                        {isLogin ? "I don't have account, Create new account" : "Already registered? Sign in"} <ArrowRight size={16} />
+                    <button type="button" onClick={() => setIsLogin(!isLogin)} className="flex justify-center w-full text-[10px] font-black uppercase text-stone-400 hover:text-[#5c1111] transition-colors">
+                        {isLogin ? (
+                            <>
+                                Not registered? 
+                                <span className="text-blue-600 ml-1">Create new account here</span>
+                            </>
+                        ) : (
+                            "Already registered? Sign in"
+                        )}<ArrowRight size={16} />
                     </button>
                 </form>
             </div>
