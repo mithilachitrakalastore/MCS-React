@@ -63,14 +63,14 @@ export const LoginPage = ({ onLogin }) => {
                                 <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Your Full Name</label>
                                 <div className="relative">
                                     <UserIcon size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                    <input required value={name} onChange={e => setName(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                    <input required value={name} title='Enter Your Full Name' onChange={e => setName(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Email Address</label>
                                 <div className="relative">
                                     <Mail size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                    <input required value={email} onChange={e => setEmail(e.target.value)} type="email" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                    <input required value={email} title='Enter Your E-mail Address' onChange={e => setEmail(e.target.value)} type="email" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                 </div>
                             </div>
                             {role === 'customer' && (
@@ -79,21 +79,21 @@ export const LoginPage = ({ onLogin }) => {
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Phone Number</label>
                                         <div className="relative">
                                             <Phone size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={phone} title='Enter Your Contact Number' onChange={e => setPhone(e.target.value)} type="tel" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Address</label>
                                         <div className="relative">
                                             <MapPin size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={address} onChange={e => setAddress(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={address} title='Enter Your Address' onChange={e => setAddress(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">City</label>
                                         <div className="relative">
                                             <MapPin size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={city} onChange={e => setCity(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={city} title='Enter Your City' onChange={e => setCity(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                 </>
@@ -105,7 +105,7 @@ export const LoginPage = ({ onLogin }) => {
                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Username</label>
                         <div className="relative">
                             <Sparkles size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                            <input required value={username} onChange={e => setUsername(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                            <input required value={username} title='Enter Your Username' onChange={e => setUsername(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                         </div>
                     </div>
 
@@ -113,7 +113,7 @@ export const LoginPage = ({ onLogin }) => {
                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Password</label>
                         <div className="relative">
                             <Lock size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                            <input required value={password} onChange={e => setPassword(e.target.value)} type="password" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                            <input required value={password} title='Enter Your Password' onChange={e => setPassword(e.target.value)} type="password" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                         </div>
                     </div>
 
@@ -130,28 +130,28 @@ export const LoginPage = ({ onLogin }) => {
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Studio Name</label>
                                         <div className="relative">
                                             <Store size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input required value={storeName} onChange={e => setStoreName(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input required value={storeName} title='Enter Your Store Name' onChange={e => setStoreName(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                     <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Phone Number</label>
                                         <div className="relative">
                                             <Phone size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={phone} onChange={e => setPhone(e.target.value)} type="tel" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={phone} title='Enter Your Store Contact Number' onChange={e => setPhone(e.target.value)} type="tel" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                     <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">Address</label>
                                         <div className="relative">
                                             <MapPin size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={address} onChange={e => setAddress(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={address} title='Enter Your Store Address' onChange={e => setAddress(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                     <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                                         <label className="text-[10px] font-black uppercase text-stone-400 pl-4">City</label>
                                         <div className="relative">
                                             <MapPin size={16} className="absolute left-5 top-1/2 -translate-y-1/2 text-stone-300" />
-                                            <input value={city} onChange={e => setCity(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
+                                            <input value={city} title='Enter Your Store Located City' onChange={e => setCity(e.target.value)} type="text" className="w-full pl-12 pr-6 py-4 bg-[#efece6] rounded-2xl outline-none focus:bg-white border border-transparent focus:border-[#5c1111]/20 transition-all font-medium" />
                                         </div>
                                     </div>
                                 </>
@@ -163,14 +163,17 @@ export const LoginPage = ({ onLogin }) => {
                         {isLogin ? "Authorize Entry" : "Establish Heritage"}
                     </button>
 
-                    <button type="button" onClick={() => setIsLogin(!isLogin)} className="flex justify-center w-full text-[10px] font-black uppercase text-stone-400 hover:text-[#5c1111] transition-colors">
+                    <button type="button" onClick={() => setIsLogin(!isLogin)} className="md:flex justify-center w-full text-[10px] font-black uppercase text-stone-400 hover:text-[#5c1111] transition-colors">
                         {isLogin ? (
                             <>
                                 Not registered? 
                                 <span className="text-blue-600 ml-1">Create new account here</span>
                             </>
                         ) : (
-                            "Already registered? Sign in"
+                            <>
+                                Already registered? 
+                                <span className="text-blue-600 ml-1">Sign in</span>
+                            </>
                         )}<ArrowRight size={16} />
                     </button>
                 </form>
