@@ -3,7 +3,7 @@
  * @param {string} userPrompt - The question or prompt from the user.
  * @returns {Promise<string>} - The AI generated response.
  */
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||'/api';
 
 export const getArtAdvice = async (userPrompt) => {
     try {
