@@ -126,11 +126,11 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
                         <span className="text-[#5c1111] font-playfair font-black text-2xl sm:text-5xl lg:text-4xl tracking-tighter">रु {product.price.toLocaleString()}</span>
                     </div>
 
-                    <p className="text-stone-500 text-sm sm:text-xm lg:text-[1rem] p-3 sm:p-3 lg:p-4 leading-relaxed font-light italic bg-[#f8f6f2] rounded-[2rem] border-l-4 border-[#5c1111]">
+                    <p className="text-stone-500 text-sm sm:text-xm lg:text-[1rem] p-3 sm:p-3 lg:p-4 leading-relaxed font-light italic bg-[#f8f6f2] rounded-[0.8rem] border-l-4 border-[#5c1111]">
                         "{product.description}"
                     </p>
 
-                    <div className="grid grid-cols-2 gap-6 bg-white p-8 rounded-[2rem] border border-stone-100 shadow-sm">
+                    <div className="grid grid-cols-2 gap-6 bg-white p-3 rounded-[0.8rem] border border-stone-100 shadow-sm">
                         <div>
                             <p className="text-[10px] font-black uppercase tracking-widest text-stone-400 mb-1">Medium & Palette</p>
                             <p className="text-stone-800 font-bold text-sm">{product.material}</p>
@@ -191,10 +191,10 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
                         title="Artisan's Choice" 
                     />
                     <div className="flex gap-2 mb-10">
-                        <button onClick={() => scrollCarousel('left')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] active:text-white transition-all text-stone-400">
+                        <button onClick={() => scrollCarousel('left')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] bg-stone-800 active:text-white  cursor-pointer transition-all text-stone-400">
                             <ChevronLeft size={20} />
                         </button>
-                        <button onClick={() => scrollCarousel('right')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] active:text-white transition-all text-stone-400">
+                        <button onClick={() => scrollCarousel('right')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] bg-stone-800 active:text-white cursor-pointer transition-all text-stone-400">
                             <ChevronRight size={20} />
                         </button>
                     </div>
@@ -220,7 +220,7 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
             {/* Reviews Section */}
             <div className="pt-24 border-t border-stone-100 grid grid-cols-1 lg:grid-cols-12 gap-20">
                 <div className="lg:col-span-4 space-y-10">
-                    <div className="bg-[#5c1111] text-white p-8 rounded-[3.5rem] shadow-2xl relative overflow-hidden">
+                    <div className="bg-[#5c1111] text-white p-6 rounded-[1.2rem] shadow-2xl relative overflow-hidden">
                         <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
                         <h3 className="font-playfair text-2xl sm:text3xl lg:text-3xl font-black mb-4">Artisan's Impact</h3>
                         <p className="text-white/70 text-sm leading-relaxed mb-10">Every review helps sustain a village economy and preserves thousands of years of Mithila oral history.</p>
@@ -241,7 +241,7 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
                     </div>
 
                     {currentUser ? (
-                        <div className="bg-white p-7 rounded-[3rem] border border-stone-100 shadow-sm space-y-6">
+                        <div className="bg-white p-6 rounded-[1.2rem] border border-stone-100 shadow-sm space-y-6">
                             <h4 className="font-black text-sm uppercase tracking-widest text-stone-900 flex items-center gap-2">
                                 <MessageSquare size={16} className="text-[#5c1111]" /> Leave a Review
                             </h4>
@@ -301,10 +301,12 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
                     ) : (
                         <div className="space-y-8">
                             {reviews.map(review => (
-                                <div key={review.id} className="bg-white p-10 rounded-[3rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all group animate-in slide-in-from-bottom-4 duration-500">
-                                    <div className="flex justify-between items-start mb-6">
+                                <div key={review.id} className="bg-white p-4 rounded-[1.2rem] border border-stone-100 shadow-sm hover:shadow-xl transition-all group animate-in slide-in-from-bottom-4 duration-500">
+                                    <div className="flex justify-between items-start mb-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 bg-[#efece6] rounded-xl flex items-center justify-center font-black text-[#5c1111] text-lg shadow-inner">{review.userName.charAt(0)}</div>
+                                            <div className="w-10 h-10 bg-[#efece6] rounded-xl flex items-center justify-center font-black text-[#5c1111] text-lg shadow-inner">
+                                                <img src={review.user?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(review.userName || 'User')}&background=5c1111&color=fff&size=128`} alt="" className='w-full h-full object-cover rounded-[0.75rem]'/>
+                                            </div>
                                             <div>
                                                 <h5 className="font-black text-sm text-stone-900">{review.userName}</h5>
                                                 <p className="text-[9px] font-black uppercase tracking-widest text-stone-400">{new Date(review.date).toLocaleDateString()}</p>

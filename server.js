@@ -120,15 +120,13 @@ app.post('/api/db', async (req, res) => {
                     id: `u-${Math.random().toString(36).substr(2, 9)}`,
                     role: 'customer',
                     status: 'active',
+                    avatar_url: picture,
                     ...restUserData
                 };
                 const { data, error } = await supabase.from('users').insert([newUser]).select();
                 if (error) throw new Error(error.message);
                 
-                let registeredUser = (data && data.length > 0) ? data[0] : newUser;
-                // Add the picture back into the returned user object so the frontend can use it during this session
-                registeredUser.avatar_url = picture; 
-                result = registeredUser;
+                result = (data && data.length > 0) ? data[0] : newUser;
                 break;
             }
             case 'getUsers': {
@@ -274,9 +272,37 @@ app.post('/api/db', async (req, res) => {
             }
             case 'getReviews': {
                 const { productId } = payload;
-                const { data, error } = await supabase.from('reviews').select('*').eq('productId', productId).order('date', { ascending: false });
-                if (error) throw new Error(error.message);
-                result = data;
+                const { data: reviews, error: reviewError } = await supabase
+                    .from('reviews')
+                    .select('*')
+                    .eq('productId', productId)
+                    .order('date', { ascending: false });
+                
+                if (reviewError) throw new Error(reviewError.message);
+
+                if (reviews && reviews.length > 0) {
+                    const userIds = [...new Set(reviews.filter(r => r.userId).map(r => r.userId))];
+                    if (userIds.length > 0) {
+                        const { data: users, error: userError } = await supabase
+                            .from('users')
+                            .select('id, avatar_url, name')
+                            .in('id', userIds);
+                        
+                        if (!userError && users) {
+                            const userMap = Object.fromEntries(users.map(u => [u.id, u]));
+                            result = reviews.map(r => ({
+                                ...r,
+                                user: userMap[r.userId] || null
+                            }));
+                        } else {
+                            result = reviews;
+                        }
+                    } else {
+                        result = reviews;
+                    }
+                } else {
+                    result = reviews;
+                }
                 break;
             }
             case 'getWishlists': {
