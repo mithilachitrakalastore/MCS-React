@@ -191,7 +191,7 @@ export const ProductDetailPage = ({ products, addToCart, wishlist, toggleWishlis
                         title="Artisan's Choice" 
                     />
                     <div className="flex gap-2 mb-10">
-                        <button onClick={() => scrollCarousel('left')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] bg-stone-800 active:text-white  cursor-pointer transition-all text-stone-400">
+                        <button onClick={() => scrollCarousel('left')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] bg-stone-800 active:text-white cursor-pointer transition-all text-stone-400">
                             <ChevronLeft size={20} />
                         </button>
                         <button onClick={() => scrollCarousel('right')} className="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center active:bg-[#5c1111] bg-stone-800 active:text-white cursor-pointer transition-all text-stone-400">
