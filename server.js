@@ -115,17 +115,20 @@ app.post('/api/db', async (req, res) => {
                 break;
             }
             case 'registerGoogleUser': {
-                const { userData } = payload;
+                const { picture, ...restUserData } = payload.userData;
                 const newUser = {
-                    avatar_url: userData.picture,
                     id: `u-${Math.random().toString(36).substr(2, 9)}`,
                     role: 'customer',
                     status: 'active',
-                    ...userData
+                    ...restUserData
                 };
                 const { data, error } = await supabase.from('users').insert([newUser]).select();
                 if (error) throw new Error(error.message);
-                result = (data && data.length > 0) ? data[0] : newUser;
+                
+                let registeredUser = (data && data.length > 0) ? data[0] : newUser;
+                // Add the picture back into the returned user object so the frontend can use it during this session
+                registeredUser.avatar_url = picture; 
+                result = registeredUser;
                 break;
             }
             case 'getUsers': {

@@ -11,7 +11,6 @@ export const ProfilePage = ({ currentUser, setCurrentUser, wishlist, products, t
     const [loading, setLoading] = useState(true);
     const [invoiceOrder, setInvoiceOrder] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
-    console.log(currentUser);
     const [phone, setPhone] = useState(currentUser.phone || '');
     const [address, setAddress] = useState(currentUser.address || '');
     const [city, setCity] = useState(currentUser.city || '');
@@ -89,7 +88,7 @@ export const ProfilePage = ({ currentUser, setCurrentUser, wishlist, products, t
                     <div className="bg-[#f8f6f2] rounded-t-[6rem] rounded-b-[1rem] sm:rounded-[3rem] p-3 sm:p-10 border border-[#e5e1d8] shadow-xl sticky top-32">
                         <div className="flex flex-col items-center text-center space-y-6">
                             <div className="w-32 h-32 bg-[#5c1111] rounded-[2.5rem] flex items-center justify-center text-white text-5xl font-black shadow-2xl">
-                                <img src={currentUser.avatar_url} alt="" className='w-full h-full object-cover rounded-[2.5rem]' />
+                                <img src={currentUser.avatar_url} alt="" className='w-full h-full object-cover rounded-[0.75rem]'/>
                             </div>
                             <div>
                                 <h2 className="font-playfair text-2xl sm:text-3xl font-black text-stone-900">{currentUser.name}</h2>

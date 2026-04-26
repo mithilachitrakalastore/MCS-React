@@ -21,9 +21,33 @@ export const LoginPage = ({ onLogin }) => {
 
     useEffect(() => {
         const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                handleGoogleSession(session);
+            let sessionData = null;
+
+            // Handle HashRouter OAuth callback issue (e.g. #/login#access_token=...)
+            if (window.location.hash.includes('access_token=')) {
+                const hashStr = window.location.hash;
+                const tokenPart = hashStr.substring(hashStr.indexOf('access_token='));
+                const params = new URLSearchParams(tokenPart);
+                const access_token = params.get('access_token');
+                const refresh_token = params.get('refresh_token');
+                
+                if (access_token && refresh_token) {
+                    const { data } = await supabase.auth.setSession({
+                        access_token,
+                        refresh_token
+                    });
+                    sessionData = data.session;
+                    window.location.hash = '#/login'; // Clean up URL
+                }
+            }
+
+            if (!sessionData) {
+                const { data } = await supabase.auth.getSession();
+                sessionData = data.session;
+            }
+
+            if (sessionData) {
+                handleGoogleSession(sessionData);
             }
         };
         checkSession();
