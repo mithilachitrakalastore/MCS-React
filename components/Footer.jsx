@@ -22,7 +22,7 @@ export const Footer = () => (
                 <div className="flex gap-4">
                     <a href="https://www.instagram.com/mithilachitrakalastore" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-red-800 transition-colors" target='_blank'><Instagram size={18} /></a>
                     <a href="https://www.facebook.com/profile.php?id=61578104247563" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-red-800 transition-colors" target='_blank'><Facebook size={18} /></a>
-                    <a href="https://www.tiktok.com/@mithila_chitrakala" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-red-800 transition-colors" target='_blank'><i class="fa-brands fa-tiktok"></i></a>
+                    <a href="https://www.tiktok.com/@mithila_chitrakala" className="w-10 h-10 flex items-center justify-center bg-white/5 rounded-full hover:bg-red-800 transition-colors" target='_blank'><i className="fa-brands fa-tiktok"></i></a>
                 </div>
             </div> 
 

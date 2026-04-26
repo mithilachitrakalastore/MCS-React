@@ -945,14 +945,14 @@ export const SellerPanel = ({ currentUser }) => {
             {/* Add Product Modal */}
             {showAddProductModal && (
                 <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-[#2a2723]/60 backdrop-blur-md animate-in fade-in duration-300 print:hidden">
-                    <div className="bg-[#f8f6f2] w-full max-w-2xl max-h-[85vh] rounded-[4rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 relative border border-white/20">
+                    <div className="bg-[#f8f6f2] w-full max-w-2xl max-h-[85vh] rounded-[1rem] md:rounded-[4rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-500 relative border border-white/20">
                         <button onClick={() => setShowAddProductModal(false)} className="absolute top-6 right-6 sm:top-10 sm:right-10 p-3 sm:p-4 bg-white/80 rounded-full hover:text-red-800 transition-all active:scale-90 z-10 shadow-sm"><X size={18} className="w-4 h-4 sm:w-5 sm:h-5"/></button>
 
-                        <div className="p-6 sm:p-10 md:p-12 space-y-6 overflow-y-auto max-h-[85vh]">
+                        <div className="p-3 sm:p-10 md:p-12 space-y-6 overflow-y-auto max-h-[85vh]">
                             <SectionHeading subtitle="Product Registry" title="Add New Artifact" />
 
                             <div className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                                     <div>
                                         <label className="block text-[10px] font-black uppercase tracking-widest text-stone-400 mb-2">Product Name</label>
                                         <input

@@ -24,7 +24,9 @@ const callDbService = async (action, payload = {}) => {
 
 export const dbService = {
     login: (username, password) => callDbService('login', { username, password }),
+    getUserByEmail: (email) => callDbService('getUserByEmail', { email }),
     register: (userData) => callDbService('register', { userData }),
+    registerGoogleUser: (userData) => callDbService('registerGoogleUser', { userData }),
     getUsers: () => callDbService('getUsers'),
     updateUser: (userId, userData) => callDbService('updateUser', { userId, userData }),
     updateUserStatus: (id, status, adminId) => callDbService('updateUserStatus', { id, status, adminId }),

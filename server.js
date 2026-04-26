@@ -101,6 +101,33 @@ app.post('/api/db', async (req, res) => {
                 result = data[0];
                 break;
             }
+            case 'getUserByEmail': {
+                const { email } = payload;
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .maybeSingle(); // maybeSingle instead of single so it doesn't throw if not found
+                
+                if (error) throw new Error(error.message);
+                if (!data || data.status !== 'active') result = null;
+                else result = data;
+                break;
+            }
+            case 'registerGoogleUser': {
+                const { userData } = payload;
+                const newUser = {
+                    avatar_url: userData.picture,
+                    id: `u-${Math.random().toString(36).substr(2, 9)}`,
+                    role: 'customer',
+                    status: 'active',
+                    ...userData
+                };
+                const { data, error } = await supabase.from('users').insert([newUser]).select();
+                if (error) throw new Error(error.message);
+                result = data[0];
+                break;
+            }
             case 'getUsers': {
                 const { data, error } = await supabase.from('users').select('*').order('created_at', { ascending: false });
                 if (error) throw new Error(error.message);
