@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { User, LogOut, Shield, Store, ShoppingBag, MapPin, Phone, Mail, Clock, CheckCircle, Package, Truck, CreditCard, FileText, X, Heart } from 'lucide-react';
+import { User, LogOut, Shield, Store, ShoppingBag, MapPin, Phone, Mail, Clock, CheckCircle, Package, Truck, CreditCard, FileText, X, Heart, Pencil, Save } from 'lucide-react';
 import { SectionHeading } from '../components/SectionHeading';
 import { dbService } from '../services/dbservices';
 import { InvoiceView } from '../components/InvoiceView';
@@ -145,6 +145,35 @@ export const ProfilePage = ({ currentUser, setCurrentUser, wishlist, products, t
                             </div>
 
                             <div className="flex flex-col w-full gap-3 pt-6">
+                                {isEditing ? (
+                                    <div className="flex gap-2 w-full">
+                                        <button
+                                            onClick={handleSaveProfile}
+                                            disabled={saving}
+                                            className="flex-1 bg-[#5c1111] text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#7a1a1a] transition-all disabled:opacity-50"
+                                        >
+                                            <Save size={14} /> {saving ? 'Saving...' : 'Save'}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                setIsEditing(false);
+                                                setPhone(currentUser.phone || '');
+                                                setAddress(currentUser.address || '');
+                                                setCity(currentUser.city || '');
+                                            }}
+                                            className="flex-1 bg-white border border-stone-200 text-stone-600 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-stone-50 transition-all"
+                                        >
+                                            <X size={14} /> Cancel
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button
+                                        onClick={() => setIsEditing(true)}
+                                        className="w-full bg-[#5c1111] text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#7a1a1a] transition-all shadow-lg"
+                                    >
+                                        <Pencil size={14} /> Edit Info
+                                    </button>
+                                )}
                                 {currentUser.role !== 'customer' && (
                                     <Link to="/seller" className="w-full bg-[#2a2723] text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#5c1111] transition-all">
                                         <Store size={14} /> Access Dashboard
