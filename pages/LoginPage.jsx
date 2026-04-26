@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { dbService } from '../services/dbservices';
 import { supabase } from '../services/supabaseClient';
 import { SectionHeading } from '../components/SectionHeading';
@@ -16,8 +16,9 @@ export const LoginPage = ({ onLogin }) => {
     const [city, setCity] = useState('');
     const [role, setRole] = useState('customer');
     const [storeName, setStoreName] = useState('');
-    const [error, setError] = useState(''); 
+    const [error, setError] = useState('');
     const [googleProfile, setGoogleProfile] = useState(null);
+    const sessionHandled = useRef(false);
 
     useEffect(() => {
         const checkSession = async () => {
@@ -30,14 +31,15 @@ export const LoginPage = ({ onLogin }) => {
                 const params = new URLSearchParams(tokenPart);
                 const access_token = params.get('access_token');
                 const refresh_token = params.get('refresh_token');
-                
+
                 if (access_token && refresh_token) {
                     const { data } = await supabase.auth.setSession({
                         access_token,
                         refresh_token
                     });
                     sessionData = data.session;
-                    window.location.hash = '#/login'; // Clean up URL
+                    // Clean up URL AFTER we have the session
+                    window.history.replaceState(null, '', window.location.pathname + '#/login');
                 }
             }
 
@@ -47,31 +49,33 @@ export const LoginPage = ({ onLogin }) => {
             }
 
             if (sessionData) {
-                handleGoogleSession(sessionData);
+                await handleGoogleSession(sessionData);
             }
         };
         checkSession();
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            if (session) {
-                handleGoogleSession(session);
-            }
-        });
-
-        return () => subscription.unsubscribe();
+        // No onAuthStateChange listener needed — checkSession handles everything
+        // This prevents double-firing which was stripping avatar_url
     }, []);
 
     const handleGoogleSession = async (session) => {
+        // Guard: only process the Google session once
+        if (sessionHandled.current) return;
+        sessionHandled.current = true;
+
         try {
-            const picture = session.user.user_metadata.avatar_url;
             const email = session.user.email;
-            const name = session.user.user_metadata.full_name || session.user.email;
-            const avatar_url = session.user.user_metadata.avatar_url;
+            const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
+            const avatar_url = session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture;
+
+            console.log("Google avatar_url detected:", avatar_url);
 
             const existingUser = await dbService.getUserByEmail(email);
             if (existingUser) {
                 await supabase.auth.signOut();
-                onLogin(existingUser);
+                const userWithAvatar = { ...existingUser, avatar_url };
+                console.log("Logging in with user:", userWithAvatar);
+                onLogin(userWithAvatar);
             } else {
                 setAuthMode('completeProfile');
                 setName(name);
@@ -80,6 +84,7 @@ export const LoginPage = ({ onLogin }) => {
             }
         } catch (err) {
             console.error("Error handling Google session:", err);
+            sessionHandled.current = false; // Allow retry on error
             setError("Failed to verify Google account.");
         }
     };
@@ -102,14 +107,15 @@ export const LoginPage = ({ onLogin }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
+
         try {
             if (authMode === 'login') {
                 const user = await dbService.login(username, password);
                 if (user) onLogin(user);
                 else setError('Invalid credentials or inactive account.');
             } else if (authMode === 'register') {
-                const newUser = await dbService.register({                    username,
+                const newUser = await dbService.register({
+                    username,
                     password,
                     name,
                     email,
@@ -143,7 +149,8 @@ export const LoginPage = ({ onLogin }) => {
                     username: generatedUsername,
                     // No password needed for Google users
                 });
-                
+
+                console.log("New User after registration:", newUser);
                 await supabase.auth.signOut();
                 onLogin(newUser);
             }
@@ -155,12 +162,12 @@ export const LoginPage = ({ onLogin }) => {
     return (
         <div className="pt-40 pb-32 px-6 max-w-xl mx-auto min-h-screen">
             <div className="bg-[#f8f6f2] rounded-[2rem] md:rounded-[4rem] p-10 md:p-10 border border-[#e5e1d8] shadow-2xl mithila-card-shadow">
-                <SectionHeading 
-                    subtitle={authMode === 'login' ? "Welcome Back" : authMode === 'register' ? "Join the Circle" : "Complete Profile"} 
-                    title={authMode === 'login' ? "Artist Portal" : authMode === 'register' ? "New Heritage" : "Almost Done"} 
-                    centered 
+                <SectionHeading
+                    subtitle={authMode === 'login' ? "Welcome Back" : authMode === 'register' ? "Join the Circle" : "Complete Profile"}
+                    title={authMode === 'login' ? "Artist Portal" : authMode === 'register' ? "New Heritage" : "Almost Done"}
+                    centered
                 />
-                
+
                 {error && <p className="text-red-700 text-center mb-6 font-bold text-xs">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -316,16 +323,16 @@ export const LoginPage = ({ onLogin }) => {
                             {(authMode === 'login' || (authMode === 'register' && role === 'customer')) && (
                                 <div className="pt-4 border-t border-stone-200 mt-4 flex flex-col items-center">
                                     <p className="text-[10px] font-black uppercase text-stone-400 mb-4">Or For Customers</p>
-                                    <button 
-                                        type="button" 
-                                        onClick={handleGoogleLogin} 
+                                    <button
+                                        type="button"
+                                        onClick={handleGoogleLogin}
                                         className="w-full bg-white text-stone-600 border border-stone-200 py-4 rounded-[2rem] font-black text-[12px] uppercase tracking-[0.2em] shadow-md hover:bg-stone-50 hover:-translate-y-1 transition-all flex items-center justify-center gap-3"
                                     >
                                         <svg width="20" height="20" viewBox="0 0 48 48" className="inline-block">
-                                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
                                         </svg>
                                         Sign in with Google
                                     </button>
@@ -338,12 +345,12 @@ export const LoginPage = ({ onLogin }) => {
                             }} className="md:flex justify-center w-full text-[10px] font-black uppercase text-stone-400 hover:text-[#5c1111] transition-colors mt-6">
                                 {authMode === 'login' ? (
                                     <>
-                                        Not registered? 
+                                        Not registered?
                                         <span className="text-blue-600 ml-1">Create new account here</span>
                                     </>
                                 ) : (
                                     <>
-                                        Already registered? 
+                                        Already registered?
                                         <span className="text-blue-600 ml-1">Sign in</span>
                                     </>
                                 )}
