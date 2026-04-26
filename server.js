@@ -98,7 +98,7 @@ app.post('/api/db', async (req, res) => {
                 };
                 const { data, error } = await supabase.from('users').insert([newUser]).select();
                 if (error) throw new Error(error.message);
-                result = data[0];
+                result = (data && data.length > 0) ? data[0] : newUser;
                 break;
             }
             case 'getUserByEmail': {
@@ -125,7 +125,7 @@ app.post('/api/db', async (req, res) => {
                 };
                 const { data, error } = await supabase.from('users').insert([newUser]).select();
                 if (error) throw new Error(error.message);
-                result = data[0];
+                result = (data && data.length > 0) ? data[0] : newUser;
                 break;
             }
             case 'getUsers': {

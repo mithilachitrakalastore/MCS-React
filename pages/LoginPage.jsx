@@ -130,7 +130,7 @@ export const LoginPage = ({ onLogin }) => {
 
     return (
         <div className="pt-40 pb-32 px-6 max-w-xl mx-auto min-h-screen">
-            <div className="bg-[#f8f6f2] rounded-[4rem] p-10 md:p-10 border border-[#e5e1d8] shadow-2xl mithila-card-shadow">
+            <div className="bg-[#f8f6f2] rounded-[2rem] md:rounded-[4rem] p-10 md:p-10 border border-[#e5e1d8] shadow-2xl mithila-card-shadow">
                 <SectionHeading 
                     subtitle={authMode === 'login' ? "Welcome Back" : authMode === 'register' ? "Join the Circle" : "Complete Profile"} 
                     title={authMode === 'login' ? "Artist Portal" : authMode === 'register' ? "New Heritage" : "Almost Done"} 
